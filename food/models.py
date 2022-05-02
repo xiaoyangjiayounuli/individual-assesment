@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from tinymce.models import HTMLField
+
  
 
 class Food_list(models.Model):
@@ -31,38 +31,27 @@ class Food_detail(models.Model):
 
 
 
+class User(models.Model):
 
-class Customer(models.Model):
-    username = models.TextField()
-    email = models.TextField()
-    balance = models.DecimalField(max_digits=8, decimal_places=2)
-    created_date = models.DateTimeField(auto_now_add=True)
+    uname = models.CharField(max_length=20, verbose_name="username", unique=True)
+    upwd = models.CharField(max_length=40, verbose_name="password", blank=False)
+    uemail = models.EmailField(verbose_name="email_address", unique=True)
 
     def __str__(self):
-        return self.username, self.email, self.balance, self.created_date
+        return f'{self.uname},{self.upwd},{self.uemail}'
 
-class Basket(models.Model):
-    username = models.TextField()
-    basketname = models.TextField()
+
+class Cart(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="user")
     foodname = models.TextField(default='')
-    address = models.TextField(default='')
-    status = models.TextField(default='unpaid')
-    created_date = models.DateTimeField(auto_now_add=True)
+    count = models.IntegerField(verbose_name="", default=0)  # 记录用户买个多少单位的商品
+
 
     def __str__(self):
-        return self.username, self.basketname, self.name, self.address, self.status, self.created_date
+        return f'{self.user},{self.foodname},{self.count}'
 
-class Basket_Detail(models.Model):
-    foodname = models.TextField()
-    username = models.TextField()
-    basketname = models.TextField()
-    address = models.TextField()
-    item = models.TextField()
-    item_id = models.IntegerField(default=0)
-    total_price = models.DecimalField(max_digits=12, decimal_places=2)
-    amount = models.IntegerField()
-    created_date = models.DateTimeField(auto_now_add=True)
+    
 
-    def __str__(self):
-        return self.name, self.username, self.basketname, self.address, 
-        self.item, self.item_id, self.price, self.total_price, self.amount, self.created_date
+
+    

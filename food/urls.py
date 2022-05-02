@@ -1,7 +1,9 @@
-from django.urls import path
+from django.urls import path, include
+import django.contrib.auth.urls
 from . import views
 
 app_name = 'food'
+
 
 urlpatterns = [
         path('', views.index, name='index'),
