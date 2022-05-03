@@ -1,0 +1,24 @@
+<html>
+<head>
+  <title>Individual food details </title>
+</head>
+<body>
+ 
+    <h1>food Tracking</h1>
+    {% for food in foods %}
+    <p>: 
+        <b>Occurs in {{food.foodname }}</b> |  
+        The measure that  are {{food.measure}}	| 
+        The grams that  are {{food.grams}} |
+        The calories that  are{{food.calories}}
+        The protein that  are {{food.protein}}	| 
+        The fat that  are {{food.fat}} |
+        The fiber that  are{{food.fiber}}
+        The carbs that  are {{food.carbs}} |
+        The category that  are{{food.category}}	
+     </p>
+     {% endfor %}
+
+   
+</body>
+</html>

@@ -3,8 +3,6 @@ import os
 from pathlib import Path
 from django.db import models
 from django.core.management.base import BaseCommand, CommandError
-from django.contrib.auth.models import User
-from food.models import  Customer
 from food.models import Food_detail, Food_list
 
 #We use the command tools so that we gain access to our models and database connections
@@ -17,9 +15,6 @@ class Command(BaseCommand):
     help = 'Load data from csv'
 
     def handle(self, *args, **options):
-        User.objects.create_user(username='YYH', password='135792468', email='709864961@qq.com').save()
-        Customer.objects.create(username='YYH', email='709864961@qq.com', balance=10000).save()
-
         # drop the data from the table so that if we rerun the file, we don't repeat values
         Food_list.objects.all().delete()
         Food_detail.objects.all().delete()

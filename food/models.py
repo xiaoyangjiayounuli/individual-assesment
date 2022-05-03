@@ -45,13 +45,10 @@ class Cart(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="user")
     foodname = models.TextField(default='')
+    total_price = models.DecimalField(max_digits=12, decimal_places=2)
+    oid = models.CharField(max_length=20, primary_key=True, verbose_name="Order Number")
     count = models.IntegerField(verbose_name="", default=0)  # 记录用户买个多少单位的商品
 
 
     def __str__(self):
         return f'{self.user},{self.foodname},{self.count}'
-
-    
-
-
-    
