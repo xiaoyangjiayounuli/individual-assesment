@@ -1,49 +1,13 @@
 {% extends 'base_foot.html' %}
-
-{% block body %}
-    <body>
-        <h1>food shop</h1>
-            <p>Click <a href = "{% url 'templates:search' %}">here</a> to search what you want.</p>
-            <p>Click <b><a href = "{% url 'templates:food_list' %}">hers</a></b> you can use the food list</p>
-    </body>
-
-    <div class="header_con">
-		<div class="header">
-			<div class="welcome fl">welcome!</div>
-			<div class="fr">
-{#                判断是否已经登录#}
-                {% if request.session.user_name|default:'' != '' %}
-{#                    default过滤器进行判断如果request.session.user_name不等于空字符串则用户登陆状态为true#}
-{#                    也就是说当用户为已登陆状态时则显示用户名#}
-
-{#                    class="login_info fl"#}
-				<div class="login_btn fl">欢迎您：<em>{{ request.session.user_name }}</em>
-                    <span>|</span>
-                    <em><a href="{% url "templates:logout" %}">退出</a></em>
-				</div>
-                {% else %}
-				<div class="login_btn fl">
-					<a href="{% url "templatesr:login" %}">登录</a>
-					<span>|</span>
-					<a href="{% url "templates:register" %}">注册</a>
-				</div>
-                {% endif %}
-				<div class="user_link fl">
-					<span>|</span>
-					<a href="{% url "templates:cart" %}">我的购物车</a>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-
-
 {% block content %}
-{% endblock content %}
-{% block center_body %}
-
-{% endblock center_body %}
-
-
-{% endblock body %}
+<html>
+    <head><title>Shop base</title></head>
+		<h1>food shop</h1>
+		<p>Click <a href = "{% url 'food:search' %}">here</a> to search what you want.</p>
+		<p>Click <b><a href = "{% url 'food:food_list' %}">hers</a></b> you can use the food list</p>
+		<a href="{% url 'food:register' %}">register</a>
+		<a href="{% url 'food:login' %}">login</a>
+		<a href="{% url 'food:user_cart' %}">my crat</a>
+    </body>
+</html>
+{% endblock %}

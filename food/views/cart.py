@@ -1,8 +1,8 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse
 
-from .models import *
-from decorator import user_decorator
+
+from food.decorator import user_decorator
 
 
 @user_decorator.login
@@ -19,7 +19,7 @@ def user_cart(request):
         # 求当前用户购买了几件商品
         return JsonResponse({'count': count})
     else:
-        return render(request, 'templates/cart.html', context)
+        return render(request, 'cart.html', context)
 
 
 @user_decorator.login

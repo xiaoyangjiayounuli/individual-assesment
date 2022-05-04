@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Food_list,Food_detail
+from food.models import Food_list,Food_detail
+
 def index(request):
-    return render(request, 'templates/index.html')
+    return render(request, 'index.html')
 
 def search(request):
     Result = Food_detail.objects.all()
@@ -9,4 +10,4 @@ def search(request):
         foodname = str(request.POST.get('foodname',''))
         category = str(request.POST.get('category',''))
         Result = Food_detail.objects.filter(foodname__icontains=foodname, category__icontains=category)
-    return render(request, 'templates/search.html', {'foods' : Result})
+    return render(request, 'search.html', {'foods' : Result})

@@ -1,18 +1,44 @@
-from django.shortcuts import render, redirect, HttpResponseRedirect, reverse
-from django.core.paginator import Paginator
-from django.http import JsonResponse
-
-from hashlib import sha1
-
-
-
+from django.shortcuts import render, HttpResponse
+from django.contrib.auth import authenticate, login
 
 def register(request):
+    messages = ''
+    if request.method=='POST':
+        username = request.POST.get('username')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        telephone = request.POST.get('telephone')
+        repeat_judge = User.objects.filter(username=username)
+        if password1 != password2:
+            messages = 'Error, passwords do not match, please try again.'
+        elif repeat_judge:
+            messages = 'Error, username already existed, please try again.'
+        else:
+            User.objects.create_user(username=username, password=password1).save()
+            Information.objects.create(username=username, telephone=telephone).save()
+            return redirect('signin')
+    return render(request, 'register.html', {'messages': messages})
 
-    context = {
-        'title': '用户注册',
-    }
-    return render(request, 'templates/register.html', context)
+
+
+def login_view(request):
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        # 与数据库中的用户名和密码比对，django默认保存密码是以哈希形式存储，并不是明文密码，这里的password验证默认调用的是User类的check_password方法，以哈希值比较。
+        user = authenticate(request, username=username, password=password)
+        # 验证如果用户不为空
+        if user is not None:
+            # login方法登录
+            login(request, user)
+            # 返回登录成功信息
+            return HttpResponse('登陆成功')
+        else:
+            # 返回登录失败信息
+            return HttpResponse('登陆失败')
+
+    return render(request, 'users/login.html')
 
 
 def register_handle(request):
@@ -37,7 +63,7 @@ def register_handle(request):
         'title': '用户登陆',
         'username': username,
     }
-    return render(request, 'templates/login.html', context)
+    return render(request, 'login.html', context)
 
 
 def register_exist(request):
@@ -54,7 +80,7 @@ def login(request):
         'error_pwd': 0,
         'uname': uname,
     }
-    return render(request, 'templates/login.html', context)
+    return render(request, 'login.html', context)
 
 
 def login_handle(request):  # 没有利用ajax提交表单
@@ -85,7 +111,7 @@ def login_handle(request):  # 没有利用ajax提交表单
                 'uname': uname,
                 'upwd': upwd,
             }
-            return render(request, 'templates/login.html', context)
+            return render(request, 'login.html', context)
     else:
         context = {
             'title': '用户名登陆',
@@ -94,7 +120,7 @@ def login_handle(request):  # 没有利用ajax提交表单
             'uname': uname,
             'upwd': upwd,
         }
-        return render(request, 'templates/login.html', context)
+        return render(request, 'login.html', context)
 
 
 def logout(request):  # 用户登出
