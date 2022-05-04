@@ -7,7 +7,7 @@ def register(request):
         username = request.POST.get('username')
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
-        telephone = request.POST.get('telephone')
+        email = request.POST.get('telephone')
         repeat_judge = User.objects.filter(username=username)
         if password1 != password2:
             messages = 'Error, passwords do not match, please try again.'
@@ -16,7 +16,7 @@ def register(request):
         else:
             User.objects.create_user(username=username, password=password1).save()
             Information.objects.create(username=username, telephone=telephone).save()
-            return redirect('signin')
+            return redirect('login')
     return render(request, 'register.html', {'messages': messages})
 
 

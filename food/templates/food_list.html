@@ -1,14 +1,30 @@
-<html>
+<html lang="en">
 <head>
-  <title>food list</title>
+    <meta charset="UTF-8">
+    <title>分页测试</title>
 </head>
 <body>
-    <h1>food list</h1>
-    
     {% for food in foods %}
     <b> <a href="{% url 'food:food_detail' id=food.id %}">{{food.foodname }}</a></b>
       This is a {{ food.foodname }} 
     </p>
     {% endfor %}
+  <div class="pagination">
+    {% if foods.has_previous %}
+      <!-- 如果当前页还有上一页，显示一个上一页的按钮 -->
+      <a href="?page={{ food_list.previous_page_number }}">上一页</a>
+    {% endif %}
+    <span class="current">
+      <!-- 显示当前页面信息 -->
+      第 {{ food_list.number }} 页 / 共 {{ food_list.paginator.num_pages }} 页
+    </span>
+    {% if food_list.has_next %}
+      <!-- 如果当前页还有上下页，显示一个下一页的按钮 -->
+      <a href="?page={{ food_list.next_page_number }}">下一页</a>
+    {% endif %}
+  </div>
+
+
+
 </body>
 </html>
