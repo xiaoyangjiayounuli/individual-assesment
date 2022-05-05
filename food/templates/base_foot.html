@@ -4,6 +4,11 @@
         <p>
         <a href = "{% url 'food:index' %}">Home</a> | 
         </p>
+        {% if user.is_authenticated %}
+        <a href = "{% url 'food:logout' %}">Log Out</a> 
+        {% else %}
+        <a href = "{% url 'food:login' %}">Log In</a> 
+        {% endif %}
         {% block content %}
         {% endblock %}
     </body>

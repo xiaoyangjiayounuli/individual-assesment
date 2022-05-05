@@ -26,5 +26,5 @@ def page_list(request):
     except EmptyPage:
         post_list = paginator.page(paginator.num_pages) 
 
-    return render(request, 'blog/index.html', context={'post_list': post_list})
+    return render(request, 'food/index.html', context={'post_list': post_list})
 

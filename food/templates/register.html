@@ -1,24 +1,37 @@
-{% extends 'base_foot.html' %}
+
+{% extends "base_foot.html" %}
+{% block title %} login {% endblock title %}
 {% block content %}
-<html>
-    <head><title>register</title></head>
-    <body>
-    <h1>User Registration</h1>
-    
-    <p>{{msg}}</p>
-    <form method="POST"> 
-        {% csrf_token %}
-        <p>Username:</p>
-        <p><input type = "text" name = "username" required="required"></p>
-        <p>Password:</p>
-        <p><input type = "password" name = "password1" required="required"></p>
-        <p>Confirm your password:</p>
-        <p><input type = "password" name = "password2" required="required"></p>
-        <p>Email:</p>
-        <p><input type = "email" name = "email" required="required"></p>
-        <p><input type="submit" value="Sign Up"></p>
-     
-</form>
-    </body>
-</html>
-{% endblock %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <br>
+            <form method="post" action=".">
+                {% csrf_token %}
+                <!-- account -->
+                <div class="form-group col-md-4">
+                    <label for="username">昵称</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <!-- email -->
+                <div class="form-group col-md-4">
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control" id="email" name="email">
+                </div>
+                <!-- password -->
+                <div class="form-group col-md-4">
+                    <label for="password">Set password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <!-- confirm -->
+                <div class="form-group col-md-4">
+                    <label for="password2">Confirm Password</label>
+                    <input type="password" class="form-control" id="password2" name="password2" required>
+                </div>
+                <!-- submit -->
+                <button type="submit" class="btn btn-primary">submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

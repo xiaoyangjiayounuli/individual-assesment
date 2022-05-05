@@ -1,27 +1,29 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
-from food.forms import UserLoginForm
+from food.forms import UserLoginForm,UserRegisterForm
 
 
-def register(request):
-    messages = ''
-    if request.method=='POST':
-        username = request.POST.get('username')
-        password1 = request.POST.get('password1')
-        password2 = request.POST.get('password2')
-        email = request.POST.get('telephone')
-        repeat_judge = User.objects.filter(username=username)
-        if password1 != password2:
-            messages = 'Error, passwords do not match, please try again.'
-        elif repeat_judge:
-            messages = 'Error, username already existed, please try again.'
+
+def user_register(request):
+    if request.method == 'POST':
+        user_register_form = UserRegisterForm(data=request.POST)
+        if user_register_form.is_valid():
+            new_user = user_register_form.save(commit=False)
+            # 设置密码
+            new_user.set_password(user_register_form.cleaned_data['password'])
+            new_user.save()
+            # 保存好数据后立即登录并返回博客列表页面
+            login(request, new_user)
+            return redirect("food:food_list")
         else:
-            User.objects.create_user(username=username, password=password1).save()
-            Information.objects.create(username=username, telephone=telephone).save()
-            return redirect('login')
-    return render(request, 'register.html', {'messages': messages})
-
+            return HttpResponse("The registration form was entered incorrectly. Please re-enter~")
+    elif request.method == 'GET':
+        user_register_form = UserRegisterForm()
+        context = { 'form': user_register_form }
+        return render(request, 'register.html', context)
+    else:
+        return HttpResponse("Please use GET or POST to request data")
 
 
 def user_login(request):
