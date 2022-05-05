@@ -1,5 +1,8 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.http import HttpResponse
+from food.forms import UserLoginForm
+
 
 def register(request):
     messages = ''
@@ -21,108 +24,31 @@ def register(request):
 
 
 
-def login_view(request):
-
+def user_login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        # 与数据库中的用户名和密码比对，django默认保存密码是以哈希形式存储，并不是明文密码，这里的password验证默认调用的是User类的check_password方法，以哈希值比较。
-        user = authenticate(request, username=username, password=password)
-        # 验证如果用户不为空
-        if user is not None:
-            # login方法登录
-            login(request, user)
-            # 返回登录成功信息
-            return HttpResponse('登陆成功')
-        else:
-            # 返回登录失败信息
-            return HttpResponse('登陆失败')
-
-    return render(request, 'users/login.html')
-
-
-def register_handle(request):
-
-    username = request.POST.get('user_name')
-    password = request.POST.get('pwd')
-    confirm_pwd = request.POST.get('confirm_pwd')
-    email = request.POST.get('email')
-
-    # 判断两次密码一致性
-    if password != confirm_pwd:
-        return redirect('/user/register/')
-    # 密码加密
-    s1 = sha1()
-    s1.update(password.encode('utf8'))
-    encrypted_pwd = s1.hexdigest()
-
-    # 创建对象
-    UserInfo.objects.create(uname=username, upwd=encrypted_pwd, uemail=email)
-    # 注册成功
-    context = {
-        'title': '用户登陆',
-        'username': username,
-    }
-    return render(request, 'login.html', context)
-
-
-def register_exist(request):
-    username = request.GET.get('uname')
-    count = UserInfo.objects.filter(uname=username).count()
-    return JsonResponse({'count': count})
-
-
-def login(request):
-    uname = request.COOKIES.get('uname', '')
-    context = {
-        'title': '用户登陆',
-        'error_name': 0,
-        'error_pwd': 0,
-        'uname': uname,
-    }
-    return render(request, 'login.html', context)
-
-
-def login_handle(request):  # 没有利用ajax提交表单
-    # 接受请求信息
-    uname = request.POST.get('username')
-    upwd = request.POST.get('pwd')
-    jizhu = request.POST.get('jizhu', 0)
-    users = UserInfo.objects.filter(uname=uname)
-    if len(users) == 1:  # 判断用户密码并跳转
-        s1 = sha1()
-        s1.update(upwd.encode('utf8'))
-        if s1.hexdigest() == users[0].upwd:
-            url = request.COOKIES.get('url', '/')
-            red = HttpResponseRedirect(url)  # 继承与HttpResponse 在跳转的同时 设置一个cookie值
-            # 是否勾选记住用户名，设置cookie
-            if jizhu != 0:
-                red.set_cookie('uname', uname)
+        user_login_form = UserLoginForm(data=request.POST)
+        if user_login_form.is_valid():
+            # .cleaned_data 清洗出合法数据
+            data = user_login_form.cleaned_data
+            # 检验账号、密码是否正确匹配数据库中的某个用户
+            # 如果均匹配则返回这个 user 对象
+            user = authenticate(username=data['username'], password=data['password'])
+            if user:
+                # 将用户数据保存在 session 中，即实现了登录动作
+                login(request, user)
+                return redirect("food:food_list")
             else:
-                red.set_cookie('uname', '', max_age=-1)  # 设置过期cookie时间，立刻过期
-            request.session['user_id'] = users[0].id
-            request.session['user_name'] = uname
-            return red
+                return HttpResponse("The account number or password has been entered incorrectly. Please re-enter~")
         else:
-            context = {
-                'title': '用户名登陆',
-                'error_name': 0,
-                'error_pwd': 1,
-                'uname': uname,
-                'upwd': upwd,
-            }
-            return render(request, 'login.html', context)
-    else:
-        context = {
-            'title': '用户名登陆',
-            'error_name': 1,
-            'error_pwd': 0,
-            'uname': uname,
-            'upwd': upwd,
-        }
+            return HttpResponse("Account number or password input is not legal")
+    elif request.method == 'GET':
+        user_login_form = UserLoginForm()
+        context = { 'form': user_login_form }
         return render(request, 'login.html', context)
+    else:
+        return HttpResponse("Please use GET or POST to request data")
 
 
 def logout(request):  # 用户登出
     request.session.flush()  # 清空当前用户所有session
-    return redirect(reverse("common:index"))
+    return redirect(reverse("food:index"))
