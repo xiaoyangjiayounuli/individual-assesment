@@ -1,14 +1,13 @@
 from django import forms
-# 引入 User 模型
 from django.contrib.auth.models import User
 
-# 登录表单，继承了 forms.Form 类
+# Login form, inherits from forms.
 class UserLoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField()
 
 class UserRegisterForm(forms.ModelForm):
-    # 复写 User 的密码
+    # Copy User's password
     password = forms.CharField()
     password2 = forms.CharField()
 
@@ -16,7 +15,7 @@ class UserRegisterForm(forms.ModelForm):
         model = User
         fields = ('username', 'email')
 
-    # 对两次输入的密码是否一致进行检查
+    # Check if the password entered twice is the same
     def clean_password2(self):
         data = self.cleaned_data
         if data.get('password') == data.get('password2'):

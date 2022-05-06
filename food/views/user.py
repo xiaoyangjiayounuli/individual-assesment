@@ -30,15 +30,15 @@ def user_login(request):
     if request.method == 'POST':
         user_login_form = UserLoginForm(data=request.POST)
         if user_login_form.is_valid():
-            # .cleaned_data 清洗出合法数据
+            # .cleaned_data Cleaning out legitimate data
             data = user_login_form.cleaned_data
-            # 检验账号、密码是否正确匹配数据库中的某个用户
-            # 如果均匹配则返回这个 user 对象
+            # Check if the account and password match a user in the database
+            # If they all match, return the user object
             user = authenticate(username=data['username'], password=data['password'])
             if user:
-                # 将用户数据保存在 session 中，即实现了登录动作
+                # The user data is saved in the session, i.e. the login action is implemented
                 login(request, user)
-                return redirect("food:food_list")
+                return redirect("food:index")
             else:
                 return HttpResponse("The account number or password has been entered incorrectly. Please re-enter~")
         else:
@@ -51,6 +51,6 @@ def user_login(request):
         return HttpResponse("Please use GET or POST to request data")
 
 
-def logout(request):  # 用户登出
-    request.session.flush()  # 清空当前用户所有session
-    return redirect(reverse("food:index"))
+def logout(request):  # logout
+    request.session.flush()  # clean current user all session
+    return redirect('food:index')

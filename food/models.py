@@ -30,25 +30,13 @@ class Food_detail(models.Model):
         return f'{self.foodname},{self.measure},{self.grams},{self.calories},{self.protein},{self.fat},{self.fiber},{self.carbs},{self.category}'
 
 
-
-class User(models.Model):
-
-    uname = models.CharField(max_length=20, verbose_name="username", unique=True)
-    upwd = models.CharField(max_length=40, verbose_name="password", blank=False)
-    uemail = models.EmailField(verbose_name="email_address", unique=True)
-
-    def __str__(self):
-        return f'{self.uname},{self.upwd},{self.uemail}'
-
-
 class Cart(models.Model):
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="user")
+    username = models.TextField()
     foodname = models.TextField(default='')
-    total_price = models.DecimalField(max_digits=12, decimal_places=2)
-    oid = models.CharField(max_length=20, primary_key=True, verbose_name="Order Number")
+    total_price = models.DecimalField(max_digits=12, decimal_places=2) 
     count = models.IntegerField(verbose_name="", default=0)  # 记录用户买个多少单位的商品
 
 
     def __str__(self):
-        return f'{self.user},{self.foodname},{self.count}'
+        return f'{self.username},{self.foodname},{self.count}, {self.total_price}'

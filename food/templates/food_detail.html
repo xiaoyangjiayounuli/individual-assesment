@@ -1,3 +1,5 @@
+{% extends 'base_foot.html' %}
+{% block content %}
 <html>
 <head>
   <title>Individual food details </title>
@@ -5,7 +7,6 @@
 <body>
  
     <h1>food Tracking</h1>
-    {% for food in foods %}
     <p>: 
         <b>Occurs in {{food.foodname }}</b> |  
         The measure that  are {{food.measure}}	| 
@@ -15,10 +16,13 @@
         The fat that  are {{food.fat}} |
         The fiber that  are{{food.fiber}}
         The carbs that  are {{food.carbs}} |
-        The category that  are{{food.category}}	
+        The category that  are{{food.category}} | 
+        The price is ${{price}}	
      </p>
-     {% endfor %}
+     #<p><a href ="{% url 'food:success' id=food.id %}">Add it into cart</a></p>
+
 
    
 </body>
 </html>
+{% endblock %}

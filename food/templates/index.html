@@ -4,9 +4,13 @@
     <head><title>Shop base</title></head>
 		<h1>food shop</h1>
 		<p>Click <a href = "{% url 'food:search' %}">here</a> to search what you want.</p>
-		<p>Click <b><a href = "{% url 'food:food_list' %}">hers</a></b> you can use the food list</p>
+		<p>Click <b><a href = "{% url 'food:food_list' %}">here</a></b> you can use the food list</p>
+		{% if user.is_authenticated %}
+		<p>Click <b><a href = "{% url 'food:cart' %}">my cart</a></b> to check your existed orders.</p>
+		{% endif %}
 		<a href="{% url 'food:register' %}">register</a>
 		<a href="{% url 'food:login' %}">login</a>
+
 		
     </body>
 </html>

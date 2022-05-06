@@ -1,0 +1,15 @@
+{% extends 'base_foot.html' %}
+{% block content %}
+
+<html>
+    <title>Admin Page</title>
+    <body>
+        <h1>Admin Page</h1>
+        <h3>All orders show below:</h3>
+        {% for order in orders %}
+        <p>{{order.id}} | {{order.username}} | {{order.foodname}} | {{order.count}} | ${{order.total_price}} | 
+            <a href="{% url 'food:staff_delete' id=order.id %}">delete</a>
+        </p>
+        {% endfor %}
+    </body>
+{% endblock %}

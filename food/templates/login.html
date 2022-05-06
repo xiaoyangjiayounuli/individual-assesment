@@ -1,6 +1,6 @@
 
 {% extends "base_foot.html" %} 
-{% block title %} 登录 {% endblock title %}
+{% block title %} login {% endblock title %}
 {% block content %}
 <div class="container">
     <div class="row">
@@ -8,17 +8,17 @@
             <br>
             <form method="post" action=".">
                 {% csrf_token %}
-                <!-- 账号 -->
+                <!-- account -->
                 <div class="form-group">
-                    <label for="username">账号</label>
+                    <label for="username">account</label>
                     <input type="text" class="form-control" id="username" name="username">
                 </div>
-                <!-- 密码 -->
+                <!-- password -->
                 <div class="form-group">
-                    <label for="password">密码</label>
+                    <label for="password">password</label>
                     <input type="password" class="form-control" id="password" name="password">
                 </div>
-                <!-- 提交按钮 -->
+                <!-- submit button -->
                 <button type="submit" class="btn btn-primary">提交</button>
             </form>
         </div>
