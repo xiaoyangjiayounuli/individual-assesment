@@ -19,6 +19,8 @@ for registration, login, shopping cart, food, then build the pages and test file
 ### Build the super account
 You can create a super user to view all orders in the user's shopping cart and to delete
           python manage.py createsuperuser
+          python manage.py createsuperuser
+          
 
 ### Exisiting super account
 admin account:
