@@ -28,3 +28,9 @@ superuser
 python3 manage.py runserver 0.0.0.0:8000 
 ### Web Uses
 It shows the nutritional content and variety of a wide range of foods and their value, and you can buy them
+
+### heroku url:
+    https://shopfood.herokuapp.com
+
+### github url:
+    https://github.com/xiaoyangjiayounuli/individual-assesment.git
